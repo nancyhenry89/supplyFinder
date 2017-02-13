@@ -8,6 +8,7 @@
   integrity="sha256-ZosEbRLbNQzLpnKIkEdrPv7lOy9C27hHQ+Xp8a4MxAQ="
   crossorigin="anonymous"></script>
     <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+      <script src="utils.js"></script>
   <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
 
 <body> 
@@ -25,7 +26,15 @@
     <script src="https://t3.code.tgoservices.com/v1.4.1/t3pd.js"></script>
 
   <script>
+$('document').ready(function(){
+        var dt=getCurrentDT();
+  var ip=getVisitorIP();
+  console.log(dt);
+  console.log(ip)
+});
+  var id;
   $( function() {
+
     $.widget( "custom.combobox", {
       _create: function() {
         this.wrapper = $( "<span>" )
@@ -61,6 +70,7 @@
           autocompleteselect: function( event, ui ) {
             $(ui.item.option).trigger('change');
             ui.item.option.selected = true;
+            id=ui.item.option.value
             this._trigger( "select", event, {
               item: ui.item.option
             });
