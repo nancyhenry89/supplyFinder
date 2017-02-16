@@ -119,9 +119,11 @@
                 autocompleteselect: function (event, ui) {
                   $(ui.item.option).trigger('change');
                   ui.item.option.selected = true;
+                  if (ui.item.option.parentNode!=null) {
                   if (ui.item.option.parentNode.id == "t3pd-printer") {
                     id = ui.item.option.value;
                     alert("product ID: " + id + "\r\n current date time: " + dt + "\r\n visitor's IP: " + ip);
+                  }
                   }
 
                   this._trigger("select", event, {
