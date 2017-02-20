@@ -22,7 +22,7 @@ function getSKU() {
 }
 
 function getHistoricalData() {
-  var hd = JSON.parse(localStorage.getItem("sku"));
+  var hd = JSON.parse(localStorage.getItem("sku")) || [];
   var titles = [];
   if (hd!=null) {
     for (var i = 0; i < hd.length; i++) {
