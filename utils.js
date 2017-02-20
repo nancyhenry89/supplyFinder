@@ -14,7 +14,6 @@ function saveHD(selectedItem, selectedItemId) {
   var skuArr = JSON.parse(localStorage.getItem("sku")) || [];
   // localStorage.setItem(selectedItemId, selectedItem);
   var sku = { selectedItem, selectedItemId };
-  debugger;
   if (skuArr.length > 0) {
     for (var i = 0; i < skuArr.length; i++) {
       if (skuArr[i].selectedItemId == sku.selectedItemId) {
