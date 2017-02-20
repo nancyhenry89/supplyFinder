@@ -10,7 +10,7 @@ function getCurrentDT() {
   return new Date();
 }
 function getSKU() {
-  var skuArr = JSON.parse(localStorage.getItem("sku")  ||[]);
+  var skuArr = JSON.parse(localStorage.getItem("sku"))||[];
   $('#t3results-table a').click(function () {
     var sku = $(this).text();
     if ($.inArray(sku, skuArr) == -1) {
