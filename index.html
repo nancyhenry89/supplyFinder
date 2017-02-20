@@ -34,7 +34,8 @@
         var dt = getCurrentDT();
         var ip = getVisitorIP();
         var hd = getHistoricalData();
-
+        var selectedItem;
+        var selectedItemId;
         $(function () {
 
           var mapping = [];
@@ -81,10 +82,9 @@
 
               },
               select: function (event, ui) {
-                console.log([ui.item.value])
                 var result;
-                var id = jQuery.inArray(ui.item.value, mapping)
-
+                var id = jQuery.inArray(ui.item.value, mapping);
+                saveHD(ui.item.value,id)
                 window.location.href = window.location.href.replace('index', 'results') + "?t3-printerId=" + parseInt(id, 10)
               },
               minLength: 1
@@ -136,7 +136,10 @@
                   if (ui.item.option.parentNode != null) {
                     if (ui.item.option.parentNode.id == "t3pd-printer") {
                       id = ui.item.option.value;
-                      alert("product ID: " + id + "\r\n current date time: " + dt + "\r\n visitor's IP: " + ip);
+                      selectedItem=ui.item.label;
+                      selectedItemId=id;
+                      saveHD(selectedItem,selectedItemId);
+                     alert("product ID: " + id + "\r\n current date time: " + dt + "\r\n visitor's IP: " + ip);
                     }
                   }
 
