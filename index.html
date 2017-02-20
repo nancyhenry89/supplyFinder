@@ -8,23 +8,36 @@
   <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
   <script src="utils.js"></script>
   <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
-
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
   <body>
-    <h1>Supply Finder</h1>
-    <div id='t3pd' class='t3 t3pd' data-cid='6925791' data-preferred-manufacturers='[
+    <div class="container">
+      <div class="dropDowns">
+        <h3>Supply Finder</h1>
+          <div id='t3pd' class='t3 t3pd' data-cid='6925791' data-preferred-manufacturers='[
           {"id": "21",   "name": "Brother"}, {"id": "27",   "name": "Canon"}, {"id": "63",   "name": "HP"}, {"id": "65",   "name": "IBM"} 
           ]' data-results-page-url='t3results.html'> Loading... </div>
-    <h1>Auto Complete</h1>
-    <input id='t3pac-printer' data-cid='6925791' data-results-page-url='results.html' data-prompt='search for printer model or cartridge number'
-      data-tool-tip='Test toolTip'> </input>
-    <script src="https://t3.code.tgoservices.com/v1.4.1/t3pd.js"></script>
-    <script>
+          <div id="hd">
+            <h5>Previous Selections</h5>
+          </div>
+      </div>
+      <div id="autocomplete">
+      <input id='t3pac-printer' data-cid='6925791' data-results-page-url='results.html' data-prompt='search for printer model or cartridge number'
+        data-tool-tip='Test toolTip'> </input>
+        <span>Search</span>
+      <div>
+        </div>
+      </div>
+      <script src="https://t3.code.tgoservices.com/v1.4.1/t3pd.js"></script>
+      <script>
       $('document').ready(function () {
         var dt = getCurrentDT();
         var ip = getVisitorIP();
+        var hd = getHistoricalData();
 
         $(function () {
- var mapping = [];
+
+          var mapping = [];
           $("#t3pac-printer").each(function () {
             var ajaxes = []
             function killAjaxes() {
@@ -43,39 +56,40 @@
                   $.getJSON("https://t3.tgoservices.com/v1/6925791/supplies?ext=1&q=" + request.term, request, response)
                 ]
                 $.when.apply(0, ajaxes).then(function () {
-                    var printers = [];
-                    var supplies=[];
-                   
+                  var printers = [];
+                  var supplies = [];
+
                   response(Array.prototype.map.call(arguments, function (res) {
 
                     for (var i = 0; i < res[0].length; i++) {
-  
+
                       if (res[0][i].supplyTypeName != undefined) {
-                        supplies[i] =res[0][i].manufacturerName + " " + res[0][i].partNumber + " [" + res[0][i].supplyTypeName + "]";
+                        supplies[i] = res[0][i].manufacturerName + " " + res[0][i].partNumber + " [" + res[0][i].supplyTypeName + "]";
                         mapping[res[0][i].id] = res[0][i].manufacturerName + " " + res[0][i].partNumber + " [" + res[0][i].supplyTypeName + "]";
 
                       } else {
                         printers[i] = res[0][i].manufacturerName + " " + res[0][i].name + " [Printer]";
-                        mapping[res[0][i].id] =res[0][i].manufacturerName + " " + res[0][i].name + " [Printer]";
+                        mapping[res[0][i].id] = res[0][i].manufacturerName + " " + res[0][i].name + " [Printer]";
 
                       }
                     }
-                 return $.merge( printers,supplies );
-                  }).reduce(function(p, c) {
-                            return p.concat(c)
-                        }))
+                    return $.merge(printers, supplies);
+                  }).reduce(function (p, c) {
+                    return p.concat(c)
+                  }))
                 })
 
               },
-              select: function (event,ui) {
-    console.log([ui.item.value])
-    var result;
-   var id=jQuery.inArray(ui.item.value, mapping) 
+              select: function (event, ui) {
+                console.log([ui.item.value])
+                var result;
+                var id = jQuery.inArray(ui.item.value, mapping)
 
-                window.location.href = window.location.href.replace('index','results')+ "?t3-printerId=" + parseInt(id, 10)
+                window.location.href = window.location.href.replace('index', 'results') + "?t3-printerId=" + parseInt(id, 10)
               },
               minLength: 1
             })
+
           })
 
         })
@@ -119,11 +133,11 @@
                 autocompleteselect: function (event, ui) {
                   $(ui.item.option).trigger('change');
                   ui.item.option.selected = true;
-                  if (ui.item.option.parentNode!=null) {
-                  if (ui.item.option.parentNode.id == "t3pd-printer") {
-                    id = ui.item.option.value;
-                    alert("product ID: " + id + "\r\n current date time: " + dt + "\r\n visitor's IP: " + ip);
-                  }
+                  if (ui.item.option.parentNode != null) {
+                    if (ui.item.option.parentNode.id == "t3pd-printer") {
+                      id = ui.item.option.value;
+                      alert("product ID: " + id + "\r\n current date time: " + dt + "\r\n visitor's IP: " + ip);
+                    }
                   }
 
                   this._trigger("select", event, {
@@ -141,7 +155,7 @@
 
               $("<a>")
                 .attr("tabIndex", -1)
-                .attr("title", "Show All Items")
+                .attr("title", "")
                 .tooltip()
                 .appendTo(this.wrapper)
                 .button({
@@ -223,6 +237,9 @@
           });
 
           $("select").combobox();
+          $('#t3pd-manufacturer').siblings('span').children('input').attr('placeholder', 'Printer brand');
+          $('#t3pd-series').siblings('span').children('input').attr('placeholder', 'Printer Series');
+          $('#t3pd-printer').siblings('span').children('input').attr('placeholder', 'Printer Model');
         });
       });
     </script>

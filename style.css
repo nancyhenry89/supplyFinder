@@ -1,0 +1,129 @@
+.dropDowns {
+    width: 280px;
+    box-sizing: border-box;
+    border: 2px solid #000;
+    float: left;
+}
+
+.dropDowns h3 {
+    background: #000;
+    color: #fff;
+    margin: 0;
+    padding: 10px;
+}
+
+div#t3pd {
+    padding: 10px;
+}
+
+
+
+a.ui-button.ui-widget.ui-button-icon-only.custom-combobox-toggle.ui-corner-right {
+    height: 27px;
+    border-bottom-right-radius: 5px;
+    border-top-right-radius: 5px;
+    border-bottom-left-radius: 0;
+    border-top-left-radius: 0;
+    margin-top: -3px;
+    background: #b3c5ff;
+    border-width: 2px;
+    width: 28px;
+    padding:0;
+    box-sizing: border-box;
+}
+
+input.custom-combobox-input.ui-widget.ui-widget-content.ui-state-default.ui-corner-left.ui-autocomplete-input {
+    height: 20px;
+    background: #fff;
+    border-radius: 5px;
+    border-bottom-right-radius: 0;
+    border-top-right-radius: 0;
+    border-width: 2px;
+    border-right: 0;
+    font-size: 13px;
+    padding: 2px;
+}
+
+span.custom-combobox {
+    margin: 10px 0;
+    display: block;
+}
+h5 {
+    margin: 0;
+    padding: 10px;
+}
+
+
+#hd a {
+    font-size: 13px;
+    color: #696868;
+    padding: 5px 10px;
+    display: inline-block;
+    width: 90%;
+    float: left;
+    box-sizing: border-box;
+}
+#hd div {
+    border-bottom: 1px solid #cbcbcb;
+    float: left;
+    width: 100%;
+    height: 40px;
+}
+
+#hd .removeH {
+    width: 10%;
+    display: inline-block;
+    float: left;
+    color: #696868;
+    padding-top: 8px;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+#hd .removeH:hover {
+    color: #ba0606;
+}
+
+
+
+div#autocomplete {
+    float: left;
+    margin: 10px 0;
+}
+
+.container {
+    width: 281px;
+    float: left;
+}
+
+#autocomplete #t3pac-printer {
+    height: 36px;
+    border-radius: 5px;
+    border-style: none;
+    border: 2px solid #d1d1d1;
+    border-bottom-right-radius: 0;
+    border-top-right-radius: 0;
+    box-sizing: border-box;
+}
+
+#autocomplete span {
+    height: 36px;
+    border-radius: 5px;
+    border-style: none;
+    border: 2px solid #d1d1d1;
+    border-left: 0;
+    display: inline-block;
+    margin-left: -4px;
+    border-bottom-left-radius: 0;
+    border-top-left-radius: 0;
+    padding: 1px;
+    box-sizing: border-box;
+    line-height: 28px;
+    width: 50px;
+}
+
+.ui-menu{
+    background: #b6b6b6;
+    font-size: 13px;
+    border: 2px solid #666666!important;
+}
