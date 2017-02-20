@@ -59,6 +59,7 @@ function removeH() {
     //sku={"selectedItem":productId,"selectedItemId":productText}
     $(this).parent('div').remove();
     var arr = JSON.parse(localStorage.getItem("sku"))
+    
     for (var i=0;i<arr.length;i++){
       if(productId!=arr[i].selectedItemId){
         var sku={"selectedItemId":arr[i].selectedItemId,"selectedItem":arr[i].selectedItem}
@@ -69,6 +70,7 @@ function removeH() {
       return elem != sku;
     });*/
     localStorage.setItem("sku", JSON.stringify(result));
+    result=[];
 
   });
 
