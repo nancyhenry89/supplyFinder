@@ -126,4 +126,26 @@ div#autocomplete {
     background: #b6b6b6;
     font-size: 13px;
     border: 2px solid #666666!important;
+    max-height: 250px;
+    overflow: auto;
+}
+
+
+/*horizontal*/
+.horizontal .dropDowns {
+    width: 700px;
+}
+
+.horizontal span.custom-combobox{
+    width:33%;
+    float:left
+}
+
+.horizontal #hd div{width: 33%;}
+
+.horizontal div#autocomplete {
+    width: 700px;
+}
+.horizontal div#autocomplete  input{
+    width:650px
 }
