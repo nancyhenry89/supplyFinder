@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="UTF-8" />
+  <script src="https://code.jquery.com/jquery-1.12.4.min.js" integrity="sha256-ZosEbRLbNQzLpnKIkEdrPv7lOy9C27hHQ+Xp8a4MxAQ="
+    crossorigin="anonymous"></script>
+  <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+  <script src="utils.js"></script>
+  <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+  <body>
+    <div class="container horizontal">
+      <div class="dropDowns">
+        <h3>Supply Finder</h1>
+          <div id='t3pd' class='t3 t3pd' data-cid='6925791' data-preferred-manufacturers='[
+          {"id": "21",   "name": "Brother"}, {"id": "27",   "name": "Canon"}, {"id": "63",   "name": "HP"}, {"id": "65",   "name": "IBM"} 
+          ]' data-results-page-url='t3results.html'> Loading... </div>
+          <div id="hd">
+            <h5>Previous Selections</h5>
+          </div>
+      </div>
+      <div id="autocomplete">
+      <input id='t3pac-printer' data-cid='6925791' data-results-page-url='results.html' data-prompt='search for printer model or cartridge number'
+        data-tool-tip='Test toolTip'> </input>
+        <span>Search</span>
+      <div>
+        </div>
+      </div>
+      <script src="https://t3.code.tgoservices.com/v1.4.1/t3pd.js"></script>
+      <script>
+      $('document').ready(function () {
+        var dt = getCurrentDT();
+        var ip = getVisitorIP();
+        var hd = getHistoricalData();
+        var selectedItem;
+        var selectedItemId;
+        $(function () {
+
+          var mapping = [];
+          $("#t3pac-printer").each(function () {
+            var ajaxes = []
+            function killAjaxes() {
+              $.each(ajaxes, function (i, ajax) {
+                ajax.abort()
+              })
+            }
+            $(this).autocomplete({
+
+              source: function (request, response) {
+                $("blink").empty()
+                killAjaxes();
+
+                ajaxes = [
+                  $.getJSON("https://t3.tgoservices.com/v1/6925791/printers?ext=1&q=" + request.term, request, response),
+                  $.getJSON("https://t3.tgoservices.com/v1/6925791/supplies?ext=1&q=" + request.term, request, response)
+                ]
+                $.when.apply(0, ajaxes).then(function () {
+                  var printers = [];
+                  var supplies = [];
+
+                  response(Array.prototype.map.call(arguments, function (res) {
+
+                    for (var i = 0; i < res[0].length; i++) {
+
+                      if (res[0][i].supplyTypeName != undefined) {
+                        supplies[i] = res[0][i].manufacturerName + " " + res[0][i].partNumber + " [" + res[0][i].supplyTypeName + "]";
+                        mapping[res[0][i].id] = res[0][i].manufacturerName + " " + res[0][i].partNumber + " [" + res[0][i].supplyTypeName + "]";
+
+                      } else {
+                        printers[i] = res[0][i].manufacturerName + " " + res[0][i].name + " [Printer]";
+                        mapping[res[0][i].id] = res[0][i].manufacturerName + " " + res[0][i].name + " [Printer]";
+
+                      }
+                    }
+                    return $.merge(printers, supplies);
+                  }).reduce(function (p, c) {
+                    return p.concat(c)
+                  }))
+                })
+
+              },
+              select: function (event, ui) {
+                var result;
+                var id = jQuery.inArray(ui.item.value, mapping);
+                saveHD(ui.item.value,id)
+                window.location.href = window.location.href.replace('index', 'results') + "?t3-printerId=" + parseInt(id, 10)
+              },
+              minLength: 1
+            })
+
+          })
+
+        })
+
+
+        var id;
+        $(function () {
+
+          $.widget("custom.combobox", {
+            _create: function () {
+              this.wrapper = $("<span>")
+                .addClass("custom-combobox")
+                .insertAfter(this.element);
+
+              this.element.hide();
+              this._createAutocomplete();
+              this._createShowAllButton();
+            },
+
+            _createAutocomplete: function () {
+              var selected = this.element.children(":selected"),
+                value = selected.val() ? selected.text() : "";
+
+              this.input = $("<input>")
+                .appendTo(this.wrapper)
+                .val(value)
+                .attr("title", "")
+                .addClass("custom-combobox-input ui-widget ui-widget-content ui-state-default ui-corner-left")
+                .autocomplete({
+                  delay: 0,
+                  minLength: 0,
+                  source: $.proxy(this, "_source")
+                })
+                .tooltip({
+                  classes: {
+                    "ui-tooltip": "ui-state-highlight"
+                  }
+                });
+
+              this._on(this.input, {
+                autocompleteselect: function (event, ui) {
+                  $(ui.item.option).trigger('change');
+                  ui.item.option.selected = true;
+                  if (ui.item.option.parentNode != null) {
+                    if (ui.item.option.parentNode.id == "t3pd-printer") {
+                      id = ui.item.option.value;
+                      selectedItem=ui.item.label;
+                      selectedItemId=id;
+                      saveHD(selectedItem,selectedItemId);
+                     alert("product ID: " + id + "\r\n current date time: " + dt + "\r\n visitor's IP: " + ip);
+                    }
+                  }
+
+                  this._trigger("select", event, {
+                    item: ui.item.option
+                  });
+                },
+
+                autocompletechange: "_removeIfInvalid"
+              });
+            },
+
+            _createShowAllButton: function () {
+              var input = this.input,
+                wasOpen = false;
+
+              $("<a>")
+                .attr("tabIndex", -1)
+                .attr("title", "")
+                .tooltip()
+                .appendTo(this.wrapper)
+                .button({
+                  icons: {
+                    primary: "ui-icon-triangle-1-s"
+                  },
+                  text: false
+                })
+                .removeClass("ui-corner-all")
+                .addClass("custom-combobox-toggle ui-corner-right")
+                .on("mousedown", function () {
+                  wasOpen = input.autocomplete("widget").is(":visible");
+                })
+                .on("click", function () {
+                  input.trigger("focus");
+
+                  // Close if already visible
+                  if (wasOpen) {
+                    return;
+                  }
+
+                  // Pass empty string as value to search for, displaying all results
+                  input.autocomplete("search", "");
+                });
+            },
+
+            _source: function (request, response) {
+              var matcher = new RegExp($.ui.autocomplete.escapeRegex(request.term), "i");
+              response(this.element.children("option").map(function () {
+                var text = $(this).text();
+                if (this.value && (!request.term || matcher.test(text)))
+                  return {
+                    label: text,
+                    value: text,
+                    option: this
+                  };
+              }));
+            },
+
+            _removeIfInvalid: function (event, ui) {
+
+              // Selected an item, nothing to do
+              if (ui.item) {
+                return;
+              }
+
+              // Search for a match (case-insensitive)
+              var value = this.input.val(),
+                valueLowerCase = value.toLowerCase(),
+                valid = false;
+              this.element.children("option").each(function () {
+                if ($(this).text().toLowerCase() === valueLowerCase) {
+                  this.selected = valid = true;
+                  return false;
+                }
+              });
+
+              // Found a match, nothing to do
+              if (valid) {
+                return;
+              }
+
+              // Remove invalid value
+              this.input
+                .val("")
+                .attr("title", value + " didn't match any item")
+                .tooltip("open");
+              this.element.val("");
+              this._delay(function () {
+                this.input.tooltip("close").attr("title", "");
+              }, 2500);
+              this.input.autocomplete("instance").term = "";
+            },
+
+            _destroy: function () {
+              this.wrapper.remove();
+              this.element.show();
+            }
+          });
+
+          $("select").combobox();
+          $('#t3pd-manufacturer').siblings('span').children('input').attr('placeholder', 'Printer brand');
+          $('#t3pd-series').siblings('span').children('input').attr('placeholder', 'Printer Series');
+          $('#t3pd-printer').siblings('span').children('input').attr('placeholder', 'Printer Model');
+        });
+      });
+    </script>
+</body>
+
+</html>
