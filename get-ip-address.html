@@ -1,0 +1,22 @@
+<html>
+<head>
+    <script src="https://code.jquery.com/jquery-1.12.4.min.js" integrity="sha256-ZosEbRLbNQzLpnKIkEdrPv7lOy9C27hHQ+Xp8a4MxAQ=" crossorigin="anonymous"></script>
+    <script>
+        /* $.get("ajax.get-ip-address.php",function(data){ return data; }); */
+    function get_ip_callback() {
+        $.get("ajax.get-ip-address.php", function(data) {
+            alert(data);
+        });
+    }
+    </script>
+</head>
+<body>
+<div id="target">Click for IP Address</div>
+
+<script>
+    $("#target").click(function() {
+        get_ip_callback();
+    });
+</script>
+</body>
+</html>
