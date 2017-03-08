@@ -1,10 +1,5 @@
 function getVisitorIP() {
-  var ret_ip;
-  $.ajaxSetup({ async: false });
-  $.get('https://api.ipify.org?format=json', function (r) {
-    ret_ip = r.ip;
-  });
-  return ret_ip;
+ get_ip_callback();
 }
 function getCurrentDT() {
   return new Date();
