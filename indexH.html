@@ -30,6 +30,15 @@
       </div>
       <script src="https://t3.code.tgoservices.com/v1.4.1/t3pd.js"></script>
       <script>
+        
+        /* $.get("ajax.get-ip-address.php",function(data){ return data; }); */
+    function get_ip_callback() {
+        $.get("ajax.get-ip-address.php", function(data) {
+            alert(data);
+        });
+    }
+        
+           
       $('document').ready(function () {
         var dt = getCurrentDT();
         var ip = getVisitorIP();
