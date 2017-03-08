@@ -1,6 +1,12 @@
 function getVisitorIP() {
  get_ip_callback();
 }
+        /* $.get("ajax.get-ip-address.php",function(data){ return data; }); */
+    function get_ip_callback() {
+        $.get("ajax.get-ip-address.php", function(data) {
+            alert(data);
+        });
+    }
 function getCurrentDT() {
   return new Date();
 }
