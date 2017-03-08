@@ -1,3 +1,3 @@
 <?php
-echo $_SERVER['REMOTE_ADDR'];exit;
+echo $ip_address = $_SERVER['REMOTE_ADDR'];
 ?>
