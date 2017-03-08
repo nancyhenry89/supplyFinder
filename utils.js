@@ -4,7 +4,7 @@ function getVisitorIP() {
         /* $.get("ajax.get-ip-address.php",function(data){ return data; }); */
     function get_ip_callback() {
         $.get("ajax.get-ip-address.php", function(data) {
-            alert(data);
+            return data;
         });
     }
 function getCurrentDT() {
